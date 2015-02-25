@@ -5,7 +5,7 @@ define(function() {
     this.height = config.height || 50;
 
     this.x = config.x || 0;
-    this.y = config.x || 0;
+    this.y = config.y || 0;
     this.color = config.color || 'rgb(0, 0, 200)';
 
     this.moveBy = 5;

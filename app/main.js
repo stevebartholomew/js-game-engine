@@ -36,9 +36,10 @@ requirejs(['game', 'scene', 'entity'], function(Game, Scene, Entity) {
   var game = new Game(scene);
   game.start();
 
+  // add a random obstacle every 2 seconds
   setInterval(function() {
     addObstacle();
- }, 1);
+  }, 2000);
 
   setInterval(function() {
     fps.innerText = Math.floor(game.fps);
