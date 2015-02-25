@@ -3,7 +3,9 @@ requirejs.config({
 });
 
 requirejs(['game', 'scene', 'entity'], function(Game, Scene, Entity) {
-  var canvas = document.getElementById('canvas');
+  var canvas = document.getElementById('canvas'),
+      fps = document.getElementById('fps'),
+      entityCount = document.getElementById('entity-count');
 
   var width = 300,
       height = 300;
@@ -17,10 +19,11 @@ requirejs(['game', 'scene', 'entity'], function(Game, Scene, Entity) {
   // naively generate a random position up to +max+ taking into account the
   // size of the player
   var randomPosition = function(max) {
-    return Math.floor(Math.random() * (max - 50)) + 50;
+    var n = Math.floor(Math.random() * (max - 1)) + 1;
+    return n;
   };
 
-  for(var i=0; i<3; i++) {
+  var addObstacle = function() {
     scene.addEntity(new Entity({
       width: 10,
       height: 10,
@@ -28,8 +31,17 @@ requirejs(['game', 'scene', 'entity'], function(Game, Scene, Entity) {
       x: randomPosition(width),
       y: randomPosition(height)
     }));
-  }
+  };
 
   var game = new Game(scene);
   game.start();
+
+  setInterval(function() {
+    addObstacle();
+ }, 1);
+
+  setInterval(function() {
+    fps.innerText = Math.floor(game.fps);
+    entityCount.innerText = scene.entities.length;
+  }, 200);
 });

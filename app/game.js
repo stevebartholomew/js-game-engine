@@ -6,21 +6,19 @@ define(['entity'], function(Entity) {
     39: 'right'
   };
 
+  var previousLoopTime = 0,
+      currentLoopTime = 0;
+
   var Game = function(scene) {
     this.scene = scene;
+    this.fps = 0;
   };
 
   Game.prototype = Object.create({
     start: function() {
-      document.addEventListener('keydown', function(e) {
-        if(!CONTROLS[e.keyCode]) { return; }
-        this.scene.onStartMove(CONTROLS[e.keyCode]);
-      }.bind(this));
+      this.addKeyboardListeners();
 
-      document.addEventListener('keyup', function(e) {
-        if(!CONTROLS[e.keyCode]) { return; }
-        this.scene.onStopMove(CONTROLS[e.keyCode]);
-      }.bind(this));
+      // kick off the game loop
       this.tick();
     },
 
@@ -30,9 +28,32 @@ define(['entity'], function(Entity) {
 
     render: function() {
       if(!this.stop) {
+        this.preRender();
         this.scene.render();
+        this.postRender();
         this.tick();
       }
+    },
+
+    preRender: function() {
+      currentLoopTime = new Date();
+      this.fps = 1000 / (currentLoopTime - previousLoopTime);
+      previousLoopTime = currentLoopTime;
+    },
+
+    postRender: function() {
+    },
+
+    addKeyboardListeners: function() {
+      document.addEventListener('keydown', function(e) {
+        if(!CONTROLS[e.keyCode]) { return; }
+        this.scene.onStartMove(CONTROLS[e.keyCode]);
+      }.bind(this));
+
+      document.addEventListener('keyup', function(e) {
+        if(!CONTROLS[e.keyCode]) { return; }
+        this.scene.onStopMove(CONTROLS[e.keyCode]);
+      }.bind(this));
     }
   });
   return Game;
