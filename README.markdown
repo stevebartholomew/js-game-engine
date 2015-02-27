@@ -8,3 +8,9 @@ Basic functionality so far:
 * Player & obstacles
 * Basic entity object
 * Collision detection
+* Naive gravity
+
+# Running
+
+Just clone the repository and open `index.html`.
+
